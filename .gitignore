@@ -7,10 +7,10 @@
 *.log
 hs_err_pid*
 replay_pid*
-target/
-bin/
-out/
-build/
+/target/
+/bin/
+/out/
+/build/
 .gradle/
 .gradle-cache/
 
