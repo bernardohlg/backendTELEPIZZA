@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bcopstein.ex4_lancheriaddd_v1.Adaptadores.Apresentacao.Presenters.CabecalhoCardapioPresenter;
 import com.bcopstein.ex4_lancheriaddd_v1.Adaptadores.Apresentacao.Presenters.CardapioPresenter;
+import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.CarregarCardapioUC;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.DefinirCardapioCorrenteUC;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.RecuperaListaCardapiosUC;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.RecuperarCardapioUC;
@@ -27,13 +28,16 @@ public class CardapioController {
     private RecuperarCardapioUC recuperaCardapioUC;
     private RecuperaListaCardapiosUC recuperaListaCardapioUC;
     private DefinirCardapioCorrenteUC definirCardapioCorrenteUC;
+    private CarregarCardapioUC carregarCardapioUC;
 
     public CardapioController(RecuperarCardapioUC recuperaCardapioUC,
                               RecuperaListaCardapiosUC recuperaListaCardapioUC,
-                              DefinirCardapioCorrenteUC definirCardapioCorrenteUC) {
+                              DefinirCardapioCorrenteUC definirCardapioCorrenteUC,
+                              CarregarCardapioUC carregarCardapioUC) {
         this.recuperaCardapioUC = recuperaCardapioUC;
         this.recuperaListaCardapioUC = recuperaListaCardapioUC;
         this.definirCardapioCorrenteUC = definirCardapioCorrenteUC;
+        this.carregarCardapioUC = carregarCardapioUC;
     }
 
     @GetMapping("/{id}")
@@ -70,4 +74,21 @@ public class CardapioController {
         }
         return ResponseEntity.ok(new CabecalhoCardapioPresenter(cabecalho.id(), cabecalho.titulo()));
     }
+
+    @GetMapping("/corrente")
+    @CrossOrigin ("*")
+    public ResponseEntity<CardapioPresenter> carregarCardapio(){
+        CardapioResponse cardapioResponse = carregarCardapioUC.run();
+        if(cardapioResponse == null) {
+            return ResponseEntity.notFound().build(); //nenhum cardapio 404
+        }
+        Set<Long> conjIdSugestoes = new HashSet<> (cardapioResponse.getSugestoesDoChef().stream().map(produto -> produto.getId()).toList());
+        CardapioPresenter cardapioPresenter = new CardapioPresenter(cardapioResponse.getCardapio().getCabecalhoCardapio().titulo());
+        for (Produto produto : cardapioResponse.getCardapio().getProdutos()) {
+            boolean sugestao = conjIdSugestoes.contains(produto.getId());
+            cardapioPresenter.insereItem(produto.getId(), produto.getDescricao(), produto.getPreco(), sugestao);
+        }
+        return ResponseEntity.ok(cardapioPresenter);   // 200: cardápio corrente
+    }
+    
 }

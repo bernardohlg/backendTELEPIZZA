@@ -75,4 +75,21 @@ public class CardapioRepositoryJDBC implements CardapioRepository{
         jdbcTemplate.update("UPDATE cardapios SET corrente = true WHERE id = ?", id);
     }
 
+    @Override // indica que vai sobrescrever um metodo que veio da classe pai 
+    public Cardapio recuperaCorrente(){
+        String sql = "SELECT id FROM cardapios WHERE corrente = true";
+        List<Long> ids = this.jdbcTemplate.query( // List<Long> ids = this.jdbcTemplate.queryForList(sql, Long.class);
+            sql, ps -> {}, (rs,rowNum) -> rs.getLong("id")
+        );
+        //isso para pegar nas linhas apenas os IDs
+
+        if(ids.isEmpty()){
+            return null;
+        }
+        //se não tiver devolve null 
+
+        return recuperaPorId(ids.getFirst());
+    }
+
+
 }
