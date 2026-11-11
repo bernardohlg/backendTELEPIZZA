@@ -15,13 +15,16 @@ import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Servicos.CardapioService;
 public class CarregarCardapioUC {
     private CardapioService cardapioService;
 
-    @Autowired
-    public RecuperarCardapioUC(CardapioService cardapioService){
+    @Autowired //o spring passa o cardapio pronto 
+    public CarregarCardapioUC(CardapioService cardapioService){
         this.cardapioService = cardapioService;
     }
 
-    public CardapioResponse run(long idCardapio){
-        Cardapio cardapio = cardapioService.recuperaCardapio(idCardapio);
+    public CardapioResponse run(){
+        Cardapio cardapio = cardapioService.recuperaCardapioCorrente();
+        if(cardapio == null){
+            return null; 
+        }
         List<Produto> sugestoes = cardapioService.recuperaSugestoesDoChef();
         return new CardapioResponse(cardapio,sugestoes);
     }

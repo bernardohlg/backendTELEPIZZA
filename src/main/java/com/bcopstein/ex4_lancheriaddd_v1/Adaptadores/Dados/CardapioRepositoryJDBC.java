@@ -76,7 +76,7 @@ public class CardapioRepositoryJDBC implements CardapioRepository{
     }
 
     @Override // indica que vai sobrescrever um metodo que veio da classe pai 
-    public Cardapio recuperaCardapio(){
+    public Cardapio recuperaCorrente(){
         String sql = "SELECT id FROM cardapios WHERE corrente = true";
         List<Long> ids = this.jdbcTemplate.query( // List<Long> ids = this.jdbcTemplate.queryForList(sql, Long.class);
             sql, ps -> {}, (rs,rowNum) -> rs.getLong("id")
