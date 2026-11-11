@@ -1,7 +1,7 @@
-package com.bcopstein.ex4_lancheriaddd.Adaptadores.Dados;
+package com.bcopstein.ex4_lancheriaddd_v1.Adaptadores.Dados;
 
-import com.bcopstein.ex4_lancheriaddd.Dominio.Entidades.PoliticaDesconto;
-import com.bcopstein.ex4_lancheriaddd.Dominio.Dados.PoliticaDescontoRepository;
+import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades.PoliticaDesconto;
+import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Dados.PoliticaDescontoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,13 +11,12 @@ import java.util.Optional;
 @Repository
 public class PoliticaDescontoRepositoryJDBC implements PoliticaDescontoRepository {
     private static final List<PoliticaDesconto> politicas = new ArrayList<>(List.of(
-        new PoliticaDesconto("DESC01", "Desconto Padrão (7% para >3 pedidos em 20 dias)", 0.07, true),
-        new PoliticaDesconto("DESC02", "Sem Desconto", 0.0, false)
-    ));
+            new PoliticaDesconto("DESC01", "Desconto Padrão (7% para >3 pedidos em 20 dias)", 0.07, true),
+            new PoliticaDesconto("DESC02", "Sem Desconto", 0.0, false)));
 
     @Override
     public List<PoliticaDesconto> findAll() {
-        return politicas;
+        return new ArrayList<>(politicas); // Retorna uma cópia para segurança
     }
 
     @Override
@@ -27,6 +26,8 @@ public class PoliticaDescontoRepositoryJDBC implements PoliticaDescontoRepositor
 
     @Override
     public void salvar(PoliticaDesconto politica) {
+        // Remove a versão antiga pelo código e adiciona a atualizada sem quebrar o
+        // iterador
         politicas.removeIf(p -> p.getCodigo().equals(politica.getCodigo()));
         politicas.add(politica);
     }

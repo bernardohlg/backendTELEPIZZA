@@ -1,4 +1,4 @@
-package com.bcopstein.ex4_lancheriaddd.Dominio.Entidades;
+package com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades;
 
 public class PoliticaDesconto {
     private String codigo;

@@ -1,6 +1,6 @@
-package com.bcopstein.ex4_lancheriaddd.Dominio.Repositorios;
+package com.bcopstein.ex4_lancheriaddd_v1.Dominio.Dados;
 
-import com.bcopstein.ex4_lancheriaddd.Dominio.Entidades.PoliticaDesconto;
+import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades.PoliticaDesconto;
 import java.util.List;
 import java.util.Optional;
 
