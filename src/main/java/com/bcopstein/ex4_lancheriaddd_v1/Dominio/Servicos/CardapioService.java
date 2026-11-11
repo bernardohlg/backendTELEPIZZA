@@ -39,4 +39,8 @@ public class CardapioService {
         }
         return cabecalho;
     }
+
+    public Cardapio recuperaCardapioCorrente(){
+        return cardapioRepository.recuperaCorrente();
+    }
 }

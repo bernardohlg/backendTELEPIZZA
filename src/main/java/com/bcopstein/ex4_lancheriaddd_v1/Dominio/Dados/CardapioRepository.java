@@ -12,4 +12,5 @@ public interface CardapioRepository {
     List<Produto> indicacoesDoChef();
     CabecalhoCardapio recuperaCabecalhoPorId(long id);
     void definirComoCorrente(long id);
+    Cardapio recuperaCardapio(); 
 }
