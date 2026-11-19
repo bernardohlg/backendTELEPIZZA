@@ -1,14 +1,11 @@
 package com.bcopstein.ex4_lancheriaddd_v1.Adaptadores.Dados;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Dados.EstoqueRepository;
-import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Dados.IngredientesRepository;
-import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades.Ingrediente;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,9 +22,17 @@ public class EstoqueRepositoryJDBC implements EstoqueRepository {
     @Override 
     public Map<Long,Integer> recuperaEstoque(){
         Map<Long, Integer> estoque = new HashMap<>();
-        return estoque;
 
-        String sql = "SELECT id, descri"
+        String sql = "SELECT quantidade, ingrediente_id FROM itensEstoque WHERE corrente = true"; 
+        this.jdbcTemplate.query(sql, rs -> {
+                                long idIngrediente = rs.getLong("idIngredientes");
+                                int quantidade = rs.getInt("quantidade");
+                                estoque.put(idIngrediente , quantidade);         
+    });  
+    this.jdbcTemplate.
+        return estoque;
+       
+        // Map<Long, Integer> ingredientes =    
 
     }
     
